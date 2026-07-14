@@ -16,13 +16,13 @@ export default function Footer() {
           {/* Left: Logo + About */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3 mb-6">
-              <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-white/10">
+              <div className="relative h-14 w-14 overflow-hidden rounded-lg bg-white/10">
                 <Image
                   src="/hdp-logo.png"
                   alt="HDP HOLDINGS"
                   fill
-                  sizes="48px"
-                  className="object-contain p-1.5"
+                  sizes="56px"
+                  className="object-contain p-2"
                 />
               </div>
               <div>

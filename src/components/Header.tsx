@@ -72,7 +72,7 @@ export default function Header() {
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex h-20 items-center justify-between">
             <Link href="/" className="flex items-center gap-3">
-              <div className="relative h-10 w-10 overflow-hidden rounded">
+              <div className="relative h-12 w-12 overflow-hidden rounded">
                 <Image src="/hdp-logo.png" alt="HDP HOLDINGS" fill className="object-contain" />
               </div>
               <div className="leading-tight">
