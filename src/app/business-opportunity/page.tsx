@@ -1,6 +1,4 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
+export const metadata = {
   title: "Global B2B Business Opportunities | HDP Holdings",
   description:
     "Explore partnership openings, joint ventures, and institutional investment tracks with HDP Holdings. Global distribution, supply chain integration, and strategic venturing.",
@@ -31,8 +29,15 @@ export const metadata: Metadata = {
   },
 };
 
-import ClientPage from "./ClientPage";
-
 export default function BusinessOpportunityPage() {
-  return <ClientPage />;
+  return (
+    <main className="min-h-screen bg-white text-slate-900 antialiased">
+      <Hero />
+      <OpportunityPillars />
+      <WhyPartner />
+      <ActiveTracks />
+      <ProcessTimeline />
+      <ContactForm />
+    </main>
+  );
 }
