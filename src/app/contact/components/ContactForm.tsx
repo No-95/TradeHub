@@ -19,10 +19,10 @@ const FALLBACK_CONTACT = {
   heroDescription:
     "Whether you're exploring a new market, scaling exports, or looking for a trade partner with real execution capability—we're ready to help.",
   email: "Email",
-  emailAddress: "contact@hdp.vn",
+  emailAddress: "business@hdpholdings.com.vn",
   emailNote: "We reply within 2 business days.",
   phone: "Phone",
-  phoneNumber: "+84 869 010 169",
+  phoneNumber: "(+84) 869 010 169",
   phoneNote: "Mon–Fri, 09:00–18:00 ICT",
   office: "Office",
   officeLocation: "Hà Nội, Việt Nam",
@@ -378,14 +378,14 @@ export default function ContactForm() {
             </div>
             <div className="flex flex-wrap gap-4 md:justify-end">
               <a
-                href="mailto:contact@hdp.vn"
+                href={`mailto:${contact.emailAddress}`}
                 className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-dark"
               >
                 <Mail className="h-4 w-4" strokeWidth={1.8} />
                 {contact.emailUsDirectly}
               </a>
               <a
-                href="tel:+84869010169"
+                href={`tel:${contact.phoneNumber.replace(/[^0-9+]/g, '')}`}
                 className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-white px-6 py-3 text-sm font-semibold text-brand transition hover:bg-brand-muted"
               >
                 <Phone className="h-4 w-4" strokeWidth={1.8} />
