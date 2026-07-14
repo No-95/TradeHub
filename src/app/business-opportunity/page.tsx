@@ -1,3 +1,10 @@
+import Hero from "./components/Hero";
+import OpportunityPillars from "./components/OpportunityPillars";
+import WhyPartner from "./components/WhyPartner";
+import ActiveTracks from "./components/ActiveTracks";
+import ProcessTimeline from "./components/ProcessTimeline";
+import ContactForm from "./components/ContactForm";
+
 export const metadata = {
   title: "Global B2B Business Opportunities | HDP Holdings",
   description:
