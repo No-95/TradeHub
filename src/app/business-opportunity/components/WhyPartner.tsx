@@ -1,41 +1,55 @@
+'use client';
+
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
+
 type ValueProp = {
   heading: string;
   description: string;
   metric?: string;
 };
 
-const valueProps: ValueProp[] = [
+const valuePropKeys = [
   {
-    heading: 'Tech-Driven Infrastructure',
-    description:
-      'Automated trade platforms, real-time logistics tracking, and integrated digital tooling reduce friction and increase transparency end-to-end.',
-    metric: '99.9% platform uptime',
+    heading: "why1Heading",
+    description: "why1Description",
+    metric: "why1Metric",
   },
   {
-    heading: 'Market Expertise & Compliance',
-    description:
-      'Deep experience in cross-border trade regulations, customs optimization, and comprehensive risk mitigation frameworks.',
-    metric: '20+ regulatory markets',
+    heading: "why2Heading",
+    description: "why2Description",
+    metric: "why2Metric",
   },
   {
-    heading: 'Proven Track Record',
-    description:
-      'Consistent delivery of enterprise-scale solutions with measurable KPIs, trusted by global industry leaders.',
-    metric: 'Enterprise-grade SLAs',
+    heading: "why3Heading",
+    description: "why3Description",
+    metric: "why3Metric",
   },
-];
+] as const;
 
 export default function WhyPartner() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const business =
+    (translations[lang].businessOpportunity as NonNullable<
+      typeof translations[typeof lang]["businessOpportunity"]
+    >) ?? translations.ENG.businessOpportunity;
+
+  const valueProps: ValueProp[] = valuePropKeys.map((item) => ({
+    heading: business[item.heading],
+    description: business[item.description],
+    metric: item.metric ? business[item.metric] : undefined,
+  }));
+
   return (
     <section className="bg-slate-950 py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Why Partner With HDP Holdings
+            {business.whyTitle}
           </h2>
           <p className="mt-4 text-lg leading-8 text-slate-300">
-            We combine technology, regulatory fluency, and proven execution to
-            deliver partnership value that scales.
+            {business.whyDescription}
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:max-w-none lg:grid-cols-3">

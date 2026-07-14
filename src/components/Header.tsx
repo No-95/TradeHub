@@ -22,6 +22,12 @@ const languageOptions = [
   { label: "KR", value: "KR" },
 ] as const;
 
+const NEXT_LANG: Record<string, "VIE" | "ENG" | "KR"> = {
+  VIE: "ENG",
+  ENG: "KR",
+  KR: "VIE",
+};
+
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -42,28 +48,6 @@ export default function Header() {
 
   return (
     <>
-      {/* Top utility bar */}
-      <div className="border-b border-white/10 bg-brand text-brand-foreground">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-2 text-xs text-white/80 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
-          <div className="flex flex-wrap items-center gap-2">
-            {languageOptions.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => setLang(option.value)}
-                className={`cursor-pointer transition-colors ${
-                  lang === option.value ? "text-white" : "hover:text-white"
-                }`}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="cursor-pointer hover:text-white">Sitemap</span>
-          </div>
-        </div>
-      </div>
-
       {/* Main header */}
       <header
         className={`sticky top-0 z-30 border-b transition-all duration-300 ${
@@ -94,6 +78,12 @@ export default function Header() {
                   {navLabel(item.labelKey)}
                 </Link>
               ))}
+              <button
+                onClick={() => setLang(NEXT_LANG[lang] ?? "ENG")}
+                className="rounded-full border border-neutral-200 px-3 py-1 text-xs font-semibold tracking-wide text-neutral-700 transition-colors hover:border-brand hover:text-brand"
+              >
+                {lang}
+              </button>
             </nav>
 
             <button
@@ -111,6 +101,14 @@ export default function Header() {
                   {navLabel(item.labelKey)}
                 </Link>
               ))}
+              <div className="px-3 pt-2">
+                <button
+                  onClick={() => setLang(NEXT_LANG[lang] ?? "ENG")}
+                  className="rounded-full border border-neutral-200 px-3 py-1 text-xs font-semibold tracking-wide text-neutral-700 transition-colors hover:border-brand hover:text-brand"
+                >
+                  {lang}
+                </button>
+              </div>
             </div>
           )}
         </div>

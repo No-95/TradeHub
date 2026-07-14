@@ -4,6 +4,7 @@ import WhyPartner from "./components/WhyPartner";
 import ActiveTracks from "./components/ActiveTracks";
 import ProcessTimeline from "./components/ProcessTimeline";
 import ContactForm from "./components/ContactForm";
+import BusinessOpportunityClient from "./components/BusinessOpportunityClient";
 
 export const metadata = {
   title: "Global B2B Business Opportunities | HDP Holdings",
@@ -39,12 +40,7 @@ export const metadata = {
 export default function BusinessOpportunityPage() {
   return (
     <main className="min-h-screen bg-white text-slate-900 antialiased">
-      <Hero />
-      <OpportunityPillars />
-      <WhyPartner />
-      <ActiveTracks />
-      <ProcessTimeline />
-      <ContactForm />
+      <BusinessOpportunityClient />
     </main>
   );
 }

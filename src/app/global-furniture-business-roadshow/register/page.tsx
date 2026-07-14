@@ -1,10 +1,29 @@
-"use client"
+"use client";
 
-import { useState, type FormEvent } from "react"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { useState, type FormEvent } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
 
-const initialForm = {
+type Lang = keyof typeof translations;
+type FormData = {
+  fullName: string;
+  email: string;
+  phone: string;
+  position: string;
+  companyName: string;
+  companyType: string;
+  employees: string;
+  website: string;
+  interests: string[];
+  participationType: string;
+  specialRequests: string;
+  agreeTerms: boolean;
+  agreeMarketing: boolean;
+};
+
+const initialForm: FormData = {
   fullName: "",
   email: "",
   phone: "",
@@ -13,110 +32,99 @@ const initialForm = {
   companyType: "",
   employees: "",
   website: "",
-  taxId: "",
   interests: [] as string[],
   participationType: "",
   specialRequests: "",
   agreeTerms: false,
   agreeMarketing: false,
-}
+};
 
-const companyTypes = [
-  "Furniture Manufacturer",
-  "Exporter / Trading Company",
-  "International Buyer",
-  "Distributor / Retailer",
-  "Other",
-]
+export default function RegisterPage() {
+  const { lang } = useLanguage();
+  const safeLang: Lang = lang === "VIE" || lang === "KR" ? lang : "ENG";
+  const t = translations[safeLang].globalFurnitureRoadshow!.register;
+  const [formData, setFormData] = useState<FormData>(initialForm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-const participationTypes = [
-  "Visitor",
-  "Exhibitor - Display Products",
-  "Speaker - Share Expertise",
-  "1-on-1 Trading with Partners",
-]
-
-export default function Page() {
-  const [formData, setFormData] = useState(initialForm)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-
-  const updateField = (field: string, value: string | boolean | string[]) => {
-    setFormData((current) => ({ ...current, [field]: value }))
-  }
+  const updateField = (field: keyof FormData, value: unknown) => {
+    setFormData((current) => ({ ...current, [field]: value }));
+  };
 
   const toggleInterest = (interest: string) => {
     setFormData((current) => {
-      const has = current.interests.includes(interest)
+      const has = current.interests.includes(interest);
       return {
         ...current,
         interests: has ? current.interests.filter((item) => item !== interest) : [...current.interests, interest],
-      }
-    })
-  }
+      };
+    });
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!formData.agreeTerms) return
+    event.preventDefault();
+    if (!formData.agreeTerms) return;
 
-    setIsSubmitting(true)
-
+    setIsSubmitting(true);
     try {
       const response = await fetch("/global-furniture-business-roadshow/register/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Unable to submit registration")
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data?.error ?? "Unable to submit registration");
       }
 
-      setIsSuccess(true)
+      setIsSuccess(true);
     } catch (error) {
-      console.error(error)
-      alert(error instanceof Error ? error.message : "Registration failed. Please try again.")
+      console.error(error);
+      alert(error instanceof Error ? error.message : "Registration failed. Please try again.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   if (isSuccess) {
     return (
       <div className="min-h-screen bg-slate-50 py-20 px-6 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-2xl rounded-3xl border border-slate-200 bg-white p-10 shadow-xl">
-          <h1 className="text-3xl font-bold text-slate-950">Registration successful</h1>
-          <p className="mt-4 text-slate-600">Thank you for submitting your registration. We will contact you with next steps.</p>
+          <h1 className="text-3xl font-bold text-slate-950">{t.successHeading}</h1>
+          <p className="mt-4 text-slate-600">{t.successBody}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link href="/global-furniture-business-roadshow" className="inline-flex justify-center rounded-full bg-amber-600 px-6 py-3 text-white hover:bg-amber-700 transition">
-              Back to KOFURN
+              {t.backToKofurn}
             </Link>
             <Link href="/global-furniture-business-roadshow" className="inline-flex justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-slate-700 hover:bg-slate-50 transition">
-              View Program Info
+              {t.viewProgramInfo}
             </Link>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-6 sm:px-8 lg:px-12" style={{ backgroundImage: 'url(/kofurn/furniture-roadshow-register-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="min-h-screen bg-slate-50 py-12 px-6 sm:px-8 lg:px-12" style={{ backgroundImage: 'url(/kofurn/furniture-roadshow-register-bg.png)', backgroundSize: "cover", backgroundPosition: "center" }}>
       <div className="mx-auto max-w-4xl rounded-3xl border border-slate-200 bg-white/95 p-10 shadow-xl">
         <div className="mb-8 flex items-center justify-between gap-4">
           <Link href="/global-furniture-business-roadshow" className="inline-flex items-center gap-2 text-slate-700 hover:text-slate-900 transition">
-            <ArrowLeft className="h-4 w-4" /> Back to KOFURN
+            <ArrowLeft className="h-4 w-4" /> {t.backToKofurn}
           </Link>
-          <div className="rounded-full bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-800">Furniture Business Roadshow Registration</div>
+          <div className="rounded-full bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-800">
+            {t.pageTitle}
+          </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-slate-950">Register for KOFURN 2026 Program</h1>
-        <p className="mt-3 text-slate-600">Complete the details below to apply for Korea furniture sourcing and partnership support.</p>
+        <h1 className="text-3xl font-bold text-slate-950">{t.formHeading}</h1>
+        <p className="mt-3 text-slate-600">{t.formDescription}</p>
 
         <form onSubmit={handleSubmit} className="mt-10 space-y-8">
           <div className="grid gap-6 md:grid-cols-2">
             <label className="space-y-2 text-sm text-slate-700">
-              <span>Full Name</span>
+              <span>{t.fullName}</span>
               <input
                 value={formData.fullName}
                 onChange={(event) => updateField("fullName", event.target.value)}
@@ -125,7 +133,7 @@ export default function Page() {
               />
             </label>
             <label className="space-y-2 text-sm text-slate-700">
-              <span>Email Address</span>
+              <span>{t.email}</span>
               <input
                 type="email"
                 value={formData.email}
@@ -138,7 +146,7 @@ export default function Page() {
 
           <div className="grid gap-6 md:grid-cols-2">
             <label className="space-y-2 text-sm text-slate-700">
-              <span>Phone Number</span>
+              <span>{t.phone}</span>
               <input
                 value={formData.phone}
                 onChange={(event) => updateField("phone", event.target.value)}
@@ -147,7 +155,7 @@ export default function Page() {
               />
             </label>
             <label className="space-y-2 text-sm text-slate-700">
-              <span>Job Title</span>
+              <span>{t.position}</span>
               <input
                 value={formData.position}
                 onChange={(event) => updateField("position", event.target.value)}
@@ -158,7 +166,7 @@ export default function Page() {
 
           <div className="grid gap-6 md:grid-cols-2">
             <label className="space-y-2 text-sm text-slate-700">
-              <span>Company Name</span>
+              <span>{t.companyName}</span>
               <input
                 value={formData.companyName}
                 onChange={(event) => updateField("companyName", event.target.value)}
@@ -167,14 +175,15 @@ export default function Page() {
               />
             </label>
             <label className="space-y-2 text-sm text-slate-700">
-              <span>Company Type</span>
+              <span>{t.companyType}</span>
               <select
                 value={formData.companyType}
                 onChange={(event) => updateField("companyType", event.target.value)}
+                required
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-amber-500"
               >
-                <option value="">Select one</option>
-                {companyTypes.map((type) => (
+                <option value="">{t.companyTypePlaceholder}</option>
+                {t.companyTypes.map((type: string) => (
                   <option key={type} value={type}>
                     {type}
                   </option>
@@ -185,7 +194,7 @@ export default function Page() {
 
           <div className="grid gap-6 md:grid-cols-2">
             <label className="space-y-2 text-sm text-slate-700">
-              <span>Number of Employees</span>
+              <span>{t.employees}</span>
               <input
                 value={formData.employees}
                 onChange={(event) => updateField("employees", event.target.value)}
@@ -193,7 +202,7 @@ export default function Page() {
               />
             </label>
             <label className="space-y-2 text-sm text-slate-700">
-              <span>Company Website</span>
+              <span>{t.website}</span>
               <input
                 value={formData.website}
                 onChange={(event) => updateField("website", event.target.value)}
@@ -203,16 +212,9 @@ export default function Page() {
           </div>
 
           <div className="space-y-2 text-sm text-slate-700">
-            <span>Interests</span>
+            <span>{t.interests}</span>
             <div className="grid gap-3 sm:grid-cols-3">
-              {[
-                "Meet International Buyers",
-                "Find Manufacturing Partners",
-                "Learn Export Procedures",
-                "Discover Market Trends",
-                "Expand Business Network",
-                "Showcase Products",
-              ].map((interest) => (
+              {t.interestsList.map((interest: string) => (
                 <label key={interest} className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 cursor-pointer">
                   <input
                     type="checkbox"
@@ -227,14 +229,15 @@ export default function Page() {
           </div>
 
           <label className="space-y-2 text-sm text-slate-700 block">
-            <span>Preferred Participation</span>
+            <span>{t.preferredParticipation}</span>
             <select
               value={formData.participationType}
               onChange={(event) => updateField("participationType", event.target.value)}
+              required
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-amber-500"
             >
-              <option value="">Select one</option>
-              {participationTypes.map((type) => (
+              <option value="">{t.preferredParticipationPlaceholder}</option>
+              {t.participationTypes.map((type: string) => (
                 <option key={type} value={type}>
                   {type}
                 </option>
@@ -243,7 +246,7 @@ export default function Page() {
           </label>
 
           <label className="space-y-2 text-sm text-slate-700 block">
-            <span>Special Requests or Questions</span>
+            <span>{t.specialRequests}</span>
             <textarea
               value={formData.specialRequests}
               onChange={(event) => updateField("specialRequests", event.target.value)}
@@ -260,7 +263,7 @@ export default function Page() {
                 onChange={(event) => updateField("agreeTerms", event.target.checked)}
                 className="h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-amber-500"
               />
-              I agree to the event terms and conditions.
+              {t.agreeTerms}
             </label>
             <label className="inline-flex items-center gap-3 text-sm text-slate-700">
               <input
@@ -269,7 +272,7 @@ export default function Page() {
                 onChange={(event) => updateField("agreeMarketing", event.target.checked)}
                 className="h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-amber-500"
               />
-              Send me updates about future HDP Holdings events.
+              {t.agreeMarketing}
             </label>
           </div>
 
@@ -278,10 +281,10 @@ export default function Page() {
             disabled={isSubmitting || !formData.agreeTerms}
             className="inline-flex w-full items-center justify-center rounded-full bg-amber-600 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-amber-600/20 transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:bg-slate-300"
           >
-            {isSubmitting ? "Submitting..." : "Complete Registration"}
+            {isSubmitting ? t.submitting : t.submit}
           </button>
         </form>
       </div>
     </div>
-  )
+  );
 }

@@ -1,41 +1,48 @@
+'use client';
+
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
+
 type Step = {
   title: string;
   description: string;
 };
 
-const steps: Step[] = [
-  {
-    title: 'Initial Inquiry',
-    description:
-      'Submit your interest through our corporate form or direct outreach. Our partnership team acknowledges receipt within 48 hours.',
-  },
-  {
-    title: 'Strategic Evaluation',
-    description:
-      'We conduct a structured assessment of alignment, market potential, and synergy with existing HDP Holdings verticals.',
-  },
-  {
-    title: 'Framework & Proposal',
-    description:
-      'Tailored partnership proposals, term sheets, and governance frameworks are prepared for mutual review.',
-  },
-  {
-    title: 'Execution & Onboarding',
-    description:
-      'Finalize agreements, integrate systems, and launch the partnership with dedicated onboarding support.',
-  },
-];
+const stepKeys = [
+  "step1Title",
+  "step2Title",
+  "step3Title",
+  "step4Title",
+] as const;
+const stepDescKeys = [
+  "step1Description",
+  "step2Description",
+  "step3Description",
+  "step4Description",
+] as const;
 
 export default function ProcessTimeline() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const business =
+    (translations[lang].businessOpportunity as NonNullable<
+      typeof translations[typeof lang]["businessOpportunity"]
+    >) ?? translations.ENG.businessOpportunity;
+
+  const steps: Step[] = stepKeys.map((key, idx) => ({
+    title: business[key],
+    description: business[stepDescKeys[idx]],
+  }));
+
   return (
     <section className="bg-white py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Partnership Onboarding Pipeline
+            {business.processTitle}
           </h2>
           <p className="mt-4 text-lg leading-8 text-slate-600">
-            A clear, four-stage path from first contact to successful execution.
+            {business.processDescription}
           </p>
         </div>
         <ol className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4">

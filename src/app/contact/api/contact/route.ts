@@ -10,21 +10,15 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const fullName = String(body?.fullName ?? "").trim();
+    const name = String(body?.name ?? "").trim();
     const email = String(body?.email ?? "").trim();
-    const phone = String(body?.phone ?? "").trim();
-    const position = String(body?.position ?? "").trim();
-    const companyName = String(body?.companyName ?? "").trim();
-    const companyType = String(body?.companyType ?? "").trim();
-    const employees = String(body?.employees ?? "").trim();
-    const website = String(body?.website ?? "").trim();
-    const interests = Array.isArray(body?.interests) ? body.interests.filter(Boolean) : [];
-    const participationType = String(body?.participationType ?? "").trim();
-    const specialRequests = String(body?.specialRequests ?? "").trim();
+    const company = String(body?.company ?? "").trim();
+    const inquiry = String(body?.inquiry ?? "").trim();
+    const message = String(body?.message ?? "").trim();
 
-    if (!fullName || !email || !companyName || !participationType) {
+    if (!name || !email || !inquiry || !message) {
       return NextResponse.json(
-        { error: "Missing required fields: fullName, email, companyName, participationType" },
+        { error: "Missing required fields: name, email, inquiry, message" },
         { status: 400 }
       );
     }
@@ -46,8 +40,8 @@ export async function POST(request: NextRequest) {
         from: FROM_EMAIL,
         to: [TO_EMAIL],
         reply_to: email,
-        subject: `New KOFURN 2026 registration: ${companyName}`,
-        text: `Full Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nPosition: ${position}\nCompany Name: ${companyName}\nCompany Type: ${companyType}\nEmployees: ${employees}\nWebsite: ${website}\nParticipation Type: ${participationType}\nInterests: ${interests.join(", ")}\nSpecial Requests: ${specialRequests}`,
+        subject: `New contact inquiry: ${inquiry}`,
+        text: `Name: ${name}\nEmail: ${email}\nCompany: ${company}\nInquiry: ${inquiry}\n\nMessage:\n${message}`,
       }),
     });
 

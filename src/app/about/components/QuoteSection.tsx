@@ -131,7 +131,7 @@ export default function QuoteSection() {
                 >
                   <div>
                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#f28018]/15 text-lg text-[#f6a153]">"</span>
-                    <blockquote className="mt-3 max-w-4xl font-serif text-[1.9rem] leading-[1.45] tracking-[-0.02em] text-white/90 sm:text-[1.7rem] md:text-[1.95rem]">
+                    <blockquote className="mt-3 max-w-4xl font-sans font-medium text-[1.9rem] leading-[1.45] tracking-[-0.02em] text-white/90 sm:text-[1.7rem] md:text-[1.95rem]">
                       {item.quote[langKey as keyof typeof item.quote]}
                     </blockquote>
                   </div>

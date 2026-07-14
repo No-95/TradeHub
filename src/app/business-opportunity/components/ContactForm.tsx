@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { useLanguage } from '@/lib/language-context';
-import { translations } from '@/lib/translations';
+import { useState, FormEvent } from "react";
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
 
 type PartnershipFormInput = {
   companyName: string;
@@ -14,7 +14,10 @@ type PartnershipFormInput = {
 export default function ContactForm() {
   const { lang } = useLanguage();
   const t = translations[lang];
-  const business = t.businessOpportunity as any;
+  const business =
+    (translations[lang].businessOpportunity as NonNullable<
+      typeof translations[typeof lang]["businessOpportunity"]
+    >) ?? translations.ENG.businessOpportunity;
   const [form, setForm] = useState<PartnershipFormInput>({
     companyName: '',
     corporateEmail: '',
@@ -45,24 +48,19 @@ export default function ContactForm() {
 
     setStatus('loading');
     try {
-      // Replace with your API route or third-party endpoint
-      const response = await fetch('/api/business-opportunity-partnership-inquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/business-opportunity-partnership-inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
 
-      if (!response.ok) throw new Error('Submission failed. Please try again.');
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data?.error ?? "Unable to submit partnership inquiry");
+      }
 
       setStatus('success');
       setForm({ companyName: '', corporateEmail: '', opportunityType: '', message: '' });
-
-      // Google Tag Manager tracking event
-      // (window as unknown as Record<string, unknown>).dataLayer = (window as unknown as Record<string, unknown>).dataLayer || [];
-      // window.dataLayer.push({
-      //   event: 'partnership_inquiry',
-      //   opportunityType: form.opportunityType,
-      // });
     } catch {
       setError(business.formErrors.submissionError);
       setStatus('error');

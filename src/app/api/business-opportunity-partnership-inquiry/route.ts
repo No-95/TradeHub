@@ -10,21 +10,14 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const fullName = String(body?.fullName ?? "").trim();
-    const email = String(body?.email ?? "").trim();
-    const phone = String(body?.phone ?? "").trim();
-    const position = String(body?.position ?? "").trim();
     const companyName = String(body?.companyName ?? "").trim();
-    const companyType = String(body?.companyType ?? "").trim();
-    const employees = String(body?.employees ?? "").trim();
-    const website = String(body?.website ?? "").trim();
-    const interests = Array.isArray(body?.interests) ? body.interests.filter(Boolean) : [];
-    const participationType = String(body?.participationType ?? "").trim();
-    const specialRequests = String(body?.specialRequests ?? "").trim();
+    const corporateEmail = String(body?.corporateEmail ?? "").trim();
+    const opportunityType = String(body?.opportunityType ?? "").trim();
+    const message = String(body?.message ?? "").trim();
 
-    if (!fullName || !email || !companyName || !participationType) {
+    if (!companyName || !corporateEmail || !opportunityType || !message) {
       return NextResponse.json(
-        { error: "Missing required fields: fullName, email, companyName, participationType" },
+        { error: "Missing required fields: companyName, corporateEmail, opportunityType, message" },
         { status: 400 }
       );
     }
@@ -45,9 +38,9 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         from: FROM_EMAIL,
         to: [TO_EMAIL],
-        reply_to: email,
-        subject: `New KOFURN 2026 registration: ${companyName}`,
-        text: `Full Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nPosition: ${position}\nCompany Name: ${companyName}\nCompany Type: ${companyType}\nEmployees: ${employees}\nWebsite: ${website}\nParticipation Type: ${participationType}\nInterests: ${interests.join(", ")}\nSpecial Requests: ${specialRequests}`,
+        reply_to: corporateEmail,
+        subject: `New business opportunity inquiry: ${companyName}`,
+        text: `Company Name: ${companyName}\nCorporate Email: ${corporateEmail}\nOpportunity Type: ${opportunityType}\n\nMessage:\n${message}`,
       }),
     });
 

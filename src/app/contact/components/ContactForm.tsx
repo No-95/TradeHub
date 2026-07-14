@@ -136,12 +136,21 @@ export default function ContactForm() {
 
     setStatus("loading");
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const response = await fetch("/contact/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data?.error ?? "Failed to send message");
+      }
 
       setStatus("success");
       setForm({ name: "", email: "", company: "", inquiry: "", message: "" });
-    } catch {
-      setError(FALLBACK_CONTACT.formErrors.submissionError);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : FALLBACK_CONTACT.formErrors.submissionError);
       setStatus("error");
     }
   };

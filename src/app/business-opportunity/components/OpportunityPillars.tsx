@@ -1,53 +1,53 @@
+'use client';
+
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
+
 type Pillar = {
   title: string;
   description: string;
   benefits: string[];
 };
 
-const pillars: Pillar[] = [
-  {
-    title: 'Strategic Partnerships & Joint Ventures',
-    description:
-      'Accelerate market expansion through operational synergy and aligned strategic interests across geographies.',
-    benefits: [
-      'Market expansion with localized expertise',
-      'Shared operational resources and risk',
-      'Long-term revenue-aligned ventures',
-    ],
-  },
-  {
-    title: 'Distribution & Supply Chain Alliances',
-    description:
-      'Leverage international trade networks, optimized logistics infrastructure, and reliable supply chain integration.',
-    benefits: [
-      'Access to established international trade lanes',
-      'Logistics optimization and cost reduction',
-      'End-to-end visibility and compliance',
-    ],
-  },
-  {
-    title: 'Investment & Venturing',
-    description:
-      'Participate in B2B digital infrastructure projects and high-growth trade hub scaling initiatives.',
-    benefits: [
-      'Digital trade platform opportunity',
-      'Infrastructure co-investment models',
-      'High-growth market exposure',
-    ],
-  },
-];
+const pillarKeys = [
+  "pillar1Title",
+  "pillar2Title",
+  "pillar3Title",
+] as const;
+const pillarDescKeys = [
+  "pillar1Description",
+  "pillar2Description",
+  "pillar3Description",
+] as const;
+const pillarBenefitPrefixes = [
+  "pillar1Benefit",
+  "pillar2Benefit",
+  "pillar3Benefit",
+] as const;
 
 export default function OpportunityPillars() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const business =
+    (translations[lang].businessOpportunity as NonNullable<
+      typeof translations[typeof lang]["businessOpportunity"]
+    >) ?? translations.ENG.businessOpportunity;
+
+  const pillars: Pillar[] = pillarKeys.map((key, idx) => ({
+    title: business[key],
+    description: business[pillarDescKeys[idx]],
+    benefits: [1, 2, 3].map((n) => business[`${pillarBenefitPrefixes[idx]}${n}` as keyof typeof business] as string),
+  }));
+
   return (
     <section className="bg-white py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Three Pillars of Partnership
+            {business.pillarsTitle}
           </h2>
           <p className="mt-4 text-lg leading-8 text-slate-600">
-            Our collaboration framework is built around focused, high-impact
-            opportunity verticals designed for scalable B2B outcomes.
+            {business.pillarsDescription}
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:max-w-none lg:grid-cols-3">

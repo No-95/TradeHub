@@ -8,23 +8,23 @@ import { translations } from "@/lib/translations";
 
 const VALUES = [
   {
-    label: "Trust",
+    labelKey: "trust",
     descKey: "trust",
   },
   {
-    label: "Dedication",
+    labelKey: "dedication",
     descKey: "dedication",
   },
   {
-    label: "Honesty",
+    labelKey: "honesty",
     descKey: "honesty",
   },
 ];
 
 const OFFICES = [
-  { city: "Hanoi", detail: "4th Floor, SHG Building", sub: "Quang Trung, Ha Dong", cityKey: "hanoi" },
-  { city: "Hai Phong", detail: "Vinhomes Marina", sub: "Lê Chân District, Hải Phòng", cityKey: "haiPhong" },
-  { city: "Ho Chi Minh City", detail: "Regional Representative Office", sub: "District 1, Ho Chi Minh City", cityKey: "hoChiMinhCity" },
+  { cityKey: "hanoi" },
+  { cityKey: "haiPhong" },
+  { cityKey: "hoChiMinhCity" },
 ];
 
 function useInView(threshold = 0.15) {
@@ -71,18 +71,18 @@ function OfficeCards({ lang }: { lang: "VIE" | "ENG" | "KR" }) {
   const [overlayOpacity, setOverlayOpacity] = useState("0.55");
 
   const cityMap: Record<string, string> = {
-    Hanoi: "/about/hanoi.png",
-    "Hai Phong": "/about/haiphong.png",
-    "Ho Chi Minh City": "/about/hcm.png",
+    hanoi: "/about/hanoi.png",
+    haiPhong: "/about/haiphong.png",
+    hoChiMinhCity: "/about/hcm.png",
   };
 
   const officeCopy: Record<string, { label: string; detail: string; sub: string }> = {
-    Hanoi: {
+    hanoi: {
       label: lang === "VIE" ? "Hà Nội" : lang === "KR" ? "하노이" : "Hanoi",
       detail: lang === "VIE" ? "Dự án Nhà máy Điện mặt trời" : lang === "KR" ? "태양광 발전소 프로젝트" : "Solar Power Plant Project",
       sub: lang === "VIE" ? "Hà Đông, Hà Nội" : lang === "KR" ? "하동, 하노이" : "Ha Dong, Hanoi",
     },
-    "Hai Phong": {
+    haiPhong: {
       label: lang === "VIE" ? "Hải Phòng" : lang === "KR" ? "하이퐁" : "Hai Phong",
       detail: lang === "VIE"
         ? "Khu công nghiệp Đình Vũ"
@@ -91,7 +91,7 @@ function OfficeCards({ lang }: { lang: "VIE" | "ENG" | "KR" }) {
           : "Dinh Vu Industrial Park",
       sub: lang === "VIE" ? "Quận Lê Chân, Hải Phòng" : lang === "KR" ? "레찬 구, 하이퐁" : "Le Chan District, Hai Phong",
     },
-    "Ho Chi Minh City": {
+    hoChiMinhCity: {
       label: lang === "VIE" ? "TP. Hồ Chí Minh" : lang === "KR" ? "호치민시" : "Ho Chi Minh City",
       detail: lang === "VIE"
         ? "Văn phòng Đại diện Khu vực"
@@ -108,15 +108,15 @@ function OfficeCards({ lang }: { lang: "VIE" | "ENG" | "KR" }) {
   }, [DEFAULT_BG]);
 
   const handleEnter = useCallback(
-    (city: string) => {
-      setBg(cityMap[city] || DEFAULT_BG);
+    (cityKey: string) => {
+      setBg(cityMap[cityKey] || DEFAULT_BG);
       setOverlayOpacity("0.25");
     },
     [cityMap, DEFAULT_BG]
   );
 
-  const officeEntry = (office: { city: string }) => {
-    const base = officeCopy[office.city] ?? { label: office.city, detail: '', sub: '' };
+  const officeEntry = (office: { cityKey: string }) => {
+    const base = officeCopy[office.cityKey] ?? { label: office.cityKey, detail: '', sub: '' };
     return {
       label: base.label,
       detail: base.detail,
@@ -149,10 +149,10 @@ function OfficeCards({ lang }: { lang: "VIE" | "ENG" | "KR" }) {
           {OFFICES.map((office, i) => {
             const copy = officeEntry(office);
             return (
-              <FadeIn key={office.city} delay={i * 0.1}>
+              <FadeIn key={office.cityKey} delay={i * 0.1}>
                 <div
                   className="p-8 lg:p-10 flex flex-col gap-5 rounded-2xl border border-white/40 bg-white/15 backdrop-blur-md transition-all duration-300 hover:bg-white/25"
-                  onMouseEnter={() => handleEnter(office.city)}
+                  onMouseEnter={() => handleEnter(office.cityKey)}
                   onMouseLeave={resetBg}
                 >
                   <MapPin size={18} className="text-[#005DA4]" />
@@ -234,7 +234,7 @@ export default function AboutPage() {
           <Globe size={16} className="text-[#C9A84C]" />
           <div className="h-px w-10 bg-[#C9A84C]" />
           <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-white">
-            Vietnam / Global
+            {about.globalTagline}
           </span>
         </div>
       </section>
@@ -276,7 +276,7 @@ export default function AboutPage() {
                     className="text-3xl mb-1"
                     style={{ fontFamily: "'DM Serif Display', serif", color: "#005DA4" }}
                   >
-                    FDI
+                    {about.fdi}
                   </div>
                   <div className="text-xs text-neutral-600 leading-snug tracking-wide">
                     {about.fdiDescription}

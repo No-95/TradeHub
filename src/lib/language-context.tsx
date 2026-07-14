@@ -11,10 +11,27 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue>({ lang: "ENG", setLang: () => {} });
 
+const STORAGE_KEY = "hdp-lang";
+
+function getInitialLang(): Lang {
+  if (typeof window === "undefined") return "ENG";
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  if (stored === "VIE" || stored === "ENG" || stored === "KR") return stored;
+  return "ENG";
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Lang>("ENG");
+  const [lang, setLang] = useState<Lang>(getInitialLang);
+
+  const updateLang = (next: Lang) => {
+    setLang(next);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(STORAGE_KEY, next);
+    }
+  };
+
   return (
-    <LanguageContext.Provider value={{ lang, setLang }}>
+    <LanguageContext.Provider value={{ lang, setLang: updateLang }}>
       {children}
     </LanguageContext.Provider>
   );
