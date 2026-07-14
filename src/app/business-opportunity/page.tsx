@@ -1,14 +1,4 @@
-"use client";
-
-import { Metadata } from "next";
-import Hero from "./components/Hero";
-import OpportunityPillars from "./components/OpportunityPillars";
-import WhyPartner from "./components/WhyPartner";
-import ActiveTracks from "./components/ActiveTracks";
-import ProcessTimeline from "./components/ProcessTimeline";
-import ContactForm from "./components/ContactForm";
-import { useLanguage } from "@/lib/language-context";
-import { translations } from "@/lib/translations";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Global B2B Business Opportunities | HDP Holdings",
@@ -41,19 +31,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BusinessOpportunityPage() {
-  const { lang } = useLanguage();
-  const t = translations[lang];
-  const content = t.businessOpportunity;
+import ClientPage from "./ClientPage";
 
-  return (
-    <main className="min-h-screen bg-white text-slate-900 antialiased">
-      <Hero content={content} />
-      <OpportunityPillars content={content} />
-      <WhyPartner content={content} />
-      <ActiveTracks content={content} />
-      <ProcessTimeline content={content} />
-      <ContactForm content={content} />
-    </main>
-  );
+export default function BusinessOpportunityPage() {
+  return <ClientPage />;
 }
