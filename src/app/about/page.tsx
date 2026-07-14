@@ -62,7 +62,9 @@ function FadeIn({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
-function OfficeCards() {
+function OfficeCards({ lang }: { lang: "VIE" | "ENG" | "KR" }) {
+  const about = translations[lang].about;
+
   const DEFAULT_BG = "/about/haiphong.png";
 
   const [bg, setBg] = useState(DEFAULT_BG);
@@ -72,6 +74,32 @@ function OfficeCards() {
     Hanoi: "/about/hanoi.png",
     "Hai Phong": "/about/haiphong.png",
     "Ho Chi Minh City": "/about/hcm.png",
+  };
+
+  const officeCopy: Record<string, { label: string; detail: string; sub: string }> = {
+    Hanoi: {
+      label: lang === "VIE" ? "Hà Nội" : lang === "KR" ? "하노이" : "Hanoi",
+      detail: lang === "VIE" ? "Dự án Nhà máy Điện mặt trời" : lang === "KR" ? "태양광 발전소 프로젝트" : "Solar Power Plant Project",
+      sub: lang === "VIE" ? "Hà Đông, Hà Nội" : lang === "KR" ? "하동, 하노이" : "Ha Dong, Hanoi",
+    },
+    "Hai Phong": {
+      label: lang === "VIE" ? "Hải Phòng" : lang === "KR" ? "하이퐁" : "Hai Phong",
+      detail: lang === "VIE"
+        ? "Khu công nghiệp Đình Vũ"
+        : lang === "KR"
+          ? "딘부 산업단지"
+          : "Dinh Vu Industrial Park",
+      sub: lang === "VIE" ? "Quận Lê Chân, Hải Phòng" : lang === "KR" ? "레찬 구, 하이퐁" : "Le Chan District, Hai Phong",
+    },
+    "Ho Chi Minh City": {
+      label: lang === "VIE" ? "TP. Hồ Chí Minh" : lang === "KR" ? "호치민시" : "Ho Chi Minh City",
+      detail: lang === "VIE"
+        ? "Văn phòng Đại diện Khu vực"
+        : lang === "KR"
+          ? "지역 대표 사무소"
+          : "Regional Representative Office",
+      sub: lang === "VIE" ? "Quận 1, TP. Hồ Chí Minh" : lang === "KR" ? "1구, 호치민시" : "District 1, Ho Chi Minh City",
+    },
   };
 
   const resetBg = useCallback(() => {
@@ -87,6 +115,19 @@ function OfficeCards() {
     [cityMap, DEFAULT_BG]
   );
 
+  const officeEntry = (office: { city: string }) => {
+    const base = officeCopy[office.city] ?? { label: office.city, detail: '', sub: '' };
+    return {
+      label: base.label,
+      detail: base.detail,
+      sub: base.sub,
+    };
+  };
+
+  const viewMapLabel = about.viewOnMap;
+  const heading = about.offices;
+  const description = about.officesDescription;
+
   return (
     <div className="relative">
       <img
@@ -98,38 +139,39 @@ function OfficeCards() {
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32">
         <div className="mb-16 text-center">
           <h2 className="text-3xl lg:text-4xl" style={{ fontFamily: "'DM Serif Display', serif", fontWeight: 700, color: "#0e0e10" }}>
-            Our Offices
+            {heading}
           </h2>
           <div className="mt-6 mx-auto max-w-2xl rounded-2xl border border-white/40 bg-white/15 backdrop-blur-md p-6 text-center">
-            <p className="text-neutral-900 text-sm leading-relaxed">
-              Our offices span key Vietnamese business hubs, combining local market access with on-the-ground execution support for investors and enterprise partners.
-            </p>
+            <p className="text-neutral-900 text-sm leading-relaxed">{description}</p>
           </div>
         </div>
         <div className="relative z-10 grid lg:grid-cols-3 gap-6">
-          {OFFICES.map((office, i) => (
-            <FadeIn key={office.city} delay={i * 0.1}>
-              <div
-                className="p-8 lg:p-10 flex flex-col gap-5 rounded-2xl border border-white/40 bg-white/15 backdrop-blur-md transition-all duration-300 hover:bg-white/25"
-                onMouseEnter={() => handleEnter(office.city)}
-                onMouseLeave={resetBg}
-              >
-                <MapPin size={18} className="text-[#005DA4]" />
-                <div>
-                  <h3 className="text-2xl lg:text-3xl mb-2" style={{ fontFamily: "'DM Serif Display', serif", fontWeight: 700, color: "#0e0e10" }}>
-                    {office.city}
-                  </h3>
-                  <p className="text-neutral-900 text-sm mb-1">{office.detail}</p>
-                  <p className="text-neutral-600 text-xs tracking-wide">{office.sub}</p>
+          {OFFICES.map((office, i) => {
+            const copy = officeEntry(office);
+            return (
+              <FadeIn key={office.city} delay={i * 0.1}>
+                <div
+                  className="p-8 lg:p-10 flex flex-col gap-5 rounded-2xl border border-white/40 bg-white/15 backdrop-blur-md transition-all duration-300 hover:bg-white/25"
+                  onMouseEnter={() => handleEnter(office.city)}
+                  onMouseLeave={resetBg}
+                >
+                  <MapPin size={18} className="text-[#005DA4]" />
+                  <div>
+                    <h3 className="text-2xl lg:text-3xl mb-2" style={{ fontFamily: "'DM Serif Display', serif", fontWeight: 700, color: "#0e0e10" }}>
+                      {copy.label}
+                    </h3>
+                    <p className="text-neutral-900 text-sm mb-1">{copy.detail}</p>
+                    <p className="text-neutral-600 text-xs tracking-wide">{copy.sub}</p>
+                  </div>
+                  <div className="mt-auto">
+                    <span className="text-xs text-[#005DA4] tracking-widest uppercase flex items-center gap-2">
+                      {viewMapLabel} <ArrowUpRight size={12} />
+                    </span>
+                  </div>
                 </div>
-                <div className="mt-auto">
-                  <span className="text-xs text-[#005DA4] tracking-widest uppercase flex items-center gap-2">
-                    View on map <ArrowUpRight size={12} />
-                  </span>
-                </div>
-              </div>
-            </FadeIn>
-          ))}
+              </FadeIn>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -251,7 +293,7 @@ export default function AboutPage() {
 
       {/* ── Offices ─ */}
       <section className="bg-white border-t border-[#e5e5e5]">
-        <OfficeCards />
+        <OfficeCards lang={lang} />
       </section>
 
       {/* ── CTA Banner ─ */}

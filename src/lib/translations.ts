@@ -23,7 +23,11 @@ export const translations = {
       clientsServed: "500K+",
       clientsServedLabel: "Khách hàng Phục vụ",
       notice: "Thông báo",
-      news: "Tin tức",
+      news: {
+        heading: "Tin mới",
+        description: "Cập nhật các hoạt động thương mại, sự kiện và nội dung liên quan đến HDP Holdings.",
+        readMore: "Đọc thêm",
+      },
       viewAll: "Xem tất cả",
       infoServices: "Dịch vụ Thông tin",
       tradeInfo: "Thông tin Thương mại",
@@ -32,6 +36,11 @@ export const translations = {
       globalWindow: "Cửa sổ Toàn cầu",
       tradeLeads: "Cơ hội Kinh doanh",
       newsroom: "Trung tâm Tin tức",
+      featuredTitle: "Hoạt Động Nổi Bật",
+      featuredDescription:
+        "Khám phá các chương trình xúc tiến thương mại, sáng kiến kết nối người mua và roadshow chuyên ngành của HDP HOLDINGS.",
+      featuredLearnMore: "Tìm hiểu thêm",
+      partnersTitle: "Đối tác & Khách hàng Thân thiết",
     },
     about: {
       aboutHdp: "Giới thiệu HDP",
@@ -56,6 +65,10 @@ export const translations = {
       ctaTitle: "Sẵn sàng đầu tư vào Việt Nam?",
       ctaDescription: "Đội ngũ của chúng tôi sẵn sàng hướng dẫn doanh nghiệp của bạn từ câu hỏi đầu tiên đến vận hành thành công.",
       contactUs: "Liên hệ chúng tôi",
+      globalTagline: "Việt Nam / Toàn cầu",
+      testimonialPrevious: "Đánh giá trước",
+      testimonialNext: "Đánh giá tiếp",
+      testimonialGoto: "Xem đánh giá {index}",
     },
     contact: {
       contactUs: "Liên hệ chúng tôi",
@@ -81,6 +94,17 @@ export const translations = {
       notReadyDescription: "Đặt lịch gọi giới thiệu ngắn hoặc yêu cầu tài liệu giới thiệu.",
       emailUsDirectly: "Email trực tiếp",
       callSupport: "Gọi hỗ trợ",
+      successMessage:
+        "Cảm ơn. Đội của chúng tôi sẽ xem xét yêu cầu của bạn và phản hồi trong hai ngày làm việc.",
+      formDisclaimer:
+        "Bằng cách gửi, bạn đồng ý với cách chúng tôi xử lý thông tin liên hệ của bạn cho yêu cầu này.",
+      formErrors: {
+        nameRequired: "Vui lòng nhập họ và tên.",
+        invalidEmail: "Vui lòng nhập email hợp lệ.",
+        selectInquiry: "Vui lòng chọn loại yêu cầu.",
+        messageRequired: "Vui lòng nhập nội dung tin nhắn.",
+        submissionError: "Có lỗi xảy ra. Vui lòng thử lại hoặc liên hệ trực tiếp.",
+      },
     },
     footer: {
       contactInformation: "Thông tin liên hệ",
@@ -94,6 +118,7 @@ export const translations = {
       termsOfService: "Điều khoản sử dụng",
       description:
         "Cổng thông tin đáng tin cậy vào bối cảnh đầu tư Việt Nam, kết nối khát vọng toàn cầu với chuyên môn địa phương.",
+      tagline: "Cổng vào thị trường đầu tư Việt Nam đáng tin cậy. Kết nối tham vọng toàn cầu với chuyên môn địa phương.",
     },
     marketInsight: {
       title: "Thông Tin Thị Trường Toàn Cầu",
@@ -110,8 +135,8 @@ export const translations = {
       marketPulseTitle: "Nhịp Thị Trường",
       marketPulseDescription:
         "Hoạt động mạng lưới được đo lường trên các hành lang thương mại và chuỗi cung ứng.",
-      ecosystemTitle: "Quy Mô Hệ Sinh Thái",
       reportsTitle: "Báo Cáo",
+      reportsDescription: "Phân tích chuyên sâu dành cho lãnh đạo và hoạt động thương mại.",
       ctaTitle: "Hành động theo dữ liệu",
       ctaDescription:
         "Sử dụng các tín hiệu này để bắt đầu cuộc trò chuyện về phân phối, đầu tư hoặc liên doanh.",
@@ -124,6 +149,12 @@ export const translations = {
       forexPairs: "cặp",
       trendLabel: "Xu hướng 30 ngày",
       forexDetails: "Chi tiết",
+      liveSnapshotLabel: "Ảnh chụp thị trường trực tiếp",
+      freightIndexLabel: "Chỉ số vận tải",
+      usdVndPair: "USD/VND",
+      krwVndPair: "KRW/VND",
+      weeklyVolumeLabel: "Lưu lượng tuần",
+      containersLabel: "container",
     },
     businessOpportunity: {
       title: "Cơ Hội Kinh Doanh Toàn Cầu",
@@ -218,9 +249,17 @@ export const translations = {
       optionDistribution: "Liên minh Phân phối & Chuỗi Cung ứng",
       optionInvestment: "Đầu tư & Phát triển",
       optionOther: "Khác",
+      optionSelect: "Chọn loại cơ hội",
       placeholderCompany: "Công ty ABC",
       placeholderEmail: "contact@company.com",
       placeholderMessage: "Chia sẻ mục tiêu, thị trường và lộ trình của bạn...",
+      formErrors: {
+        nameRequired: "Vui lòng nhập tên công ty.",
+        invalidEmail: "Vui lòng nhập email hợp lệ.",
+        selectInquiry: "Vui lòng chọn loại cơ hội.",
+        messageRequired: "Vui lòng nhập nội dung tin nhắn.",
+        submissionError: "Có lỗi xảy ra. Vui lòng thử lại hoặc liên hệ trực tiếp.",
+      },
     },
   },
   ENG: {
@@ -247,7 +286,12 @@ export const translations = {
       clientsServed: "500K+",
       clientsServedLabel: "Clients Served",
       notice: "Notice",
-      news: "News",
+      news: {
+        heading: "Latest updates",
+        description:
+          "News from HDP Holdings covering diplomacy, policy, aerospace trade, and technology cooperation.",
+        readMore: "Read more",
+      },
       viewAll: "View All",
       infoServices: "Info Services",
       tradeInfo: "Trade Info",
@@ -256,6 +300,11 @@ export const translations = {
       globalWindow: "Global Window",
       tradeLeads: "Trade Leads",
       newsroom: "HDP HOLDINGS Newsroom",
+      featuredTitle: "Featured Activities",
+      featuredDescription:
+        "Explore HDP HOLDINGS’ trade promotion programs, buyer matching initiatives, and sector-specific roadshows.",
+      featuredLearnMore: "Learn More",
+      partnersTitle: "Trusted Partners & Clients",
     },
     about: {
       aboutHdp: "About HDP",
@@ -280,6 +329,10 @@ export const translations = {
       ctaTitle: "Ready to invest in Vietnam?",
       ctaDescription: "Our team is ready to guide your enterprise from first inquiry through successful operation.",
       contactUs: "Contact Us",
+      globalTagline: "Vietnam / Global",
+      testimonialPrevious: "Previous testimonial",
+      testimonialNext: "Next testimonial",
+      testimonialGoto: "Go to testimonial {index}",
     },
     contact: {
       contactUs: "Contact Us",
@@ -305,6 +358,15 @@ export const translations = {
       notReadyDescription: "Book a short intro call or request our capability brief.",
       emailUsDirectly: "Email us directly",
       callSupport: "Call support",
+      successMessage: "Thank you. Our team will review your inquiry and reply within two business days.",
+      formDisclaimer: "By submitting, you agree to our handling of your contact details for this inquiry.",
+      formErrors: {
+        nameRequired: "Name is required.",
+        invalidEmail: "Please enter a valid work email.",
+        selectInquiry: "Please select an inquiry type.",
+        messageRequired: "Message is required.",
+        submissionError: "Something went wrong. Please try again or contact us directly.",
+      },
     },
     footer: {
       contactInformation: "Contact Information",
@@ -317,6 +379,8 @@ export const translations = {
       privacyPolicy: "Privacy Policy",
       termsOfService: "Terms of Service",
       description:
+        "Your trusted gateway into Vietnam's investment landscape. Connecting global ambition with local expertise.",
+      tagline:
         "Your trusted gateway into Vietnam's investment landscape. Connecting global ambition with local expertise.",
     },
     marketInsight: {
@@ -336,6 +400,7 @@ export const translations = {
         "Network-scale activity measured across trade corridors and supplier pipelines.",
       ecosystemTitle: "Ecosystem Scale",
       reportsTitle: "Reports",
+      reportsDescription: "Deep-dive analysis curated for executives and trade operators.",
       ctaTitle: "Act on the data",
       ctaDescription:
         "Use these signals to start a conversation about distribution, investment, or joint-venture execution.",
@@ -348,6 +413,12 @@ export const translations = {
       forexPairs: "pairs",
       trendLabel: "30-DAY TREND",
       forexDetails: "Details",
+      liveSnapshotLabel: "Live market snapshot",
+      freightIndexLabel: "Freight index",
+      usdVndPair: "USD/VND",
+      krwVndPair: "KRW/VND",
+      weeklyVolumeLabel: "Weekly volume",
+      containersLabel: "containers",
     },
     businessOpportunity: {
       title: "Global B2B Business Opportunities",
@@ -437,15 +508,22 @@ export const translations = {
       messageLabel: "Message",
       submitButton: "Submit Partnership Inquiry",
       submittingButton: "Submitting...",
-      successMessage:
-        "Thank you. Our partnership team will reach out shortly.",
+      successMessage: "Thank you. Our partnership team will reach out shortly.",
       optionStrategic: "Strategic Partnership & Joint Ventures",
       optionDistribution: "Distribution & Supply Chain Alliances",
       optionInvestment: "Investment & Venturing",
       optionOther: "Other",
+      optionSelect: "Select opportunity type",
       placeholderCompany: "Acme Corporation",
       placeholderEmail: "contact@company.com",
       placeholderMessage: "Share your goals, markets, and timeline...",
+      formErrors: {
+        nameRequired: "Name is required.",
+        invalidEmail: "Please enter a valid work email.",
+        selectInquiry: "Please select an opportunity type.",
+        messageRequired: "Message is required.",
+        submissionError: "Something went wrong. Please try again or contact us directly.",
+      },
     },
   },
   KR: {
@@ -472,7 +550,11 @@ export const translations = {
       clientsServed: "500K+",
       clientsServedLabel: "서비스 고객",
       notice: "공지사항",
-      news: "뉴스",
+      news: {
+        heading: "최신 업데이트",
+        description: "HDP Holdings의 외교, 정책, 항공우주 무역 및 기술 협력 소식을 확인하세요.",
+        readMore: "자세히 보기",
+      },
       viewAll: "모두 보기",
       infoServices: "정보 서비스",
       tradeInfo: "무역 정보",
@@ -505,6 +587,10 @@ export const translations = {
       ctaTitle: "베트남에 투자할 준비가 되셨나요?",
       ctaDescription: "우리 팀은 첫 문의부터 성공적인 운영까지 기업을 안내할 준비가 되어 있습니다.",
       contactUs: "문의하기",
+      globalTagline: "베트남 / 글로벌",
+      testimonialPrevious: "이전 인터뷰",
+      testimonialNext: "다음 인터뷰",
+      testimonialGoto: "{index}번 인터뷰로 이동",
     },
     contact: {
       contactUs: "문의하기",
@@ -530,6 +616,15 @@ export const translations = {
       notReadyDescription: "짧은 소개 통화를 예약하거나 브리프를 요청하세요.",
       emailUsDirectly: "직접 이메일 보내기",
       callSupport: "전화 지원",
+      successMessage: "감사합니다. 우리 팀에서 귀하의 문의를 검토하고 2영업일 이내에 답변드리겠습니다.",
+      formDisclaimer: "제출함으로써 귀하는 본 문의에 대한 연락처 정보 처리에 동의합니다.",
+      formErrors: {
+        nameRequired: "이름을 입력하세요.",
+        invalidEmail: "유효한 이메일을 입력하세요.",
+        selectInquiry: "문의 유형을 선택하세요.",
+        messageRequired: "메시지를 입력하세요.",
+        submissionError: "문제가 발생했습니다. 다시 시도하거나 직접 문의하세요.",
+      },
     },
     footer: {
       contactInformation: "연락처 정보",
@@ -543,6 +638,8 @@ export const translations = {
       termsOfService: "서비스 약관",
       description:
         "베트남 투자 시장을 향한 신뢰할 수 있는 관문으로, 글로벌 야망과 지역 전문성을 연결합니다.",
+      tagline:
+        "베트남 투자 시장을 향한 신뢰할 수 있는 관문. 글로벌 야망과 지역 전문성을 연결합니다.",
     },
     marketInsight: {
       title: "글로벌 B2B 시장 인사이트 및 분석",
@@ -561,6 +658,7 @@ export const translations = {
         "무역 회랑과 공급망을 기반으로 측정된 네트워크 활동입니다.",
       ecosystemTitle: "생태계 규모",
       reportsTitle: "리포트",
+      reportsDescription: "경영진과 무역 운영자를 위한 심층 분석.",
       ctaTitle: "데이터로 행동하세요",
       ctaDescription:
         "분배, 투자 또는 합작 실행에 대한 대화를 시작하세요.",
@@ -573,6 +671,12 @@ export const translations = {
       forexPairs: "쌍",
       trendLabel: "30일 추세",
       forexDetails: "세부 정보",
+      liveSnapshotLabel: "실시간 시장 스냅샷",
+      freightIndexLabel: "운송 지수",
+      usdVndPair: "USD/VND",
+      krwVndPair: "KRW/VND",
+      weeklyVolumeLabel: "주간 물동량",
+      containersLabel: "컨테이너",
     },
     businessOpportunity: {
       title: "글로벌 B2B 비즈니스 기회",
@@ -624,8 +728,7 @@ export const translations = {
         "측정 가능한 KPI로 엔터프라이즈급 솔루션을 일관되게 전달하며 글로벌 리더가 신뢰합니다.",
       why3Metric: "기업급 SLA",
       tracksTitle: "활성 전략 트랙 — 2026",
-      tracksDescription:
-        "현재 성장 목표와 정렬된 즉각적인 협력 기회.",
+      tracksDescription: "현재 성장 목표와 정렬된 즉각적인 협력 기회.",
       track1Name: "지역 유통 파트너",
       track1Target: "수입업체 및 물류 서비스 제공자",
       track1Region: "동남아 / 동아시아",
@@ -667,9 +770,17 @@ export const translations = {
       optionDistribution: "유통 및 공급망 동맹",
       optionInvestment: "투자 및 벤처링",
       optionOther: "기타",
+      optionSelect: "기회 유형을 선택하세요.",
       placeholderCompany: "회사명",
       placeholderEmail: "contact@company.com",
       placeholderMessage: "목표, 시장 및 일정에 대해 공유해 주세요...",
+      formErrors: {
+        nameRequired: "이름을 입력하세요.",
+        invalidEmail: "유효한 이메일을 입력하세요.",
+        selectInquiry: "문의 유형을 선택하세요.",
+        messageRequired: "메시지를 입력하세요.",
+        submissionError: "문제가 발생했습니다. 다시 시도하거나 직접 문의하세요.",
+      },
     },
   },
 };

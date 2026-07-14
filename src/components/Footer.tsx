@@ -33,8 +33,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm text-white/70 leading-relaxed max-w-xs">
-              Your trusted gateway into Vietnam&apos;s investment landscape.
-              Connecting global ambition with local expertise.
+              {footer.description}
             </p>
           </div>
 
@@ -170,20 +169,20 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-6 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-white/50 tracking-wide">
-              &copy; {new Date().getFullYear()} HDP Holdings. All rights reserved.
+              &copy; {new Date().getFullYear()} {t.siteName}. {footer.tagline}
             </p>
             <div className="flex items-center gap-6">
               <a
                 href="#"
                 className="text-xs text-white/50 hover:text-white transition-colors"
               >
-                Privacy Policy
+                {footer.privacyPolicy}
               </a>
               <a
                 href="#"
                 className="text-xs text-white/50 hover:text-white transition-colors"
               >
-                Terms of Service
+                {footer.termsOfService}
               </a>
             </div>
           </div>

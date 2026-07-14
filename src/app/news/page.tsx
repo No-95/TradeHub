@@ -1,12 +1,14 @@
 import { Metadata } from "next";
 import NewsGrid from "./components/NewsGrid";
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
 
 export const metadata: Metadata = {
-  title: "News & Updates | HDP HOLDINGS",
+  title: "news | HDP HOLDINGS",
   description:
     "Latest updates from HDP Holdings on trade promotion, partnerships, and international market expansion.",
   openGraph: {
-    title: "News & Updates | HDP HOLDINGS",
+    title: "news | HDP HOLDINGS",
     description:
       "Latest updates from HDP Holdings on trade promotion, partnerships, and international market expansion.",
     url: "https://www.hdpholdings.com/news",

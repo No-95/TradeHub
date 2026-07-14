@@ -82,11 +82,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-white text-neutral-900">
-        <Header />
+        <LanguageProvider>
+          <Header />
+        </LanguageProvider>
         <main className="flex-1">
-          <LanguageProvider>
-            {children}
-          </LanguageProvider>
+          {children}
         </main>
         <Footer />
         <WaitingScreen />

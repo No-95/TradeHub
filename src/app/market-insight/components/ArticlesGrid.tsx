@@ -2,6 +2,8 @@
 
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/language-context';
+import { translations } from '@/lib/translations';
 
 type Article = {
   title: string;
@@ -35,14 +37,19 @@ const articles: Article[] = [
 ];
 
 export default function ArticlesGrid() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const insight = t.marketInsight;
+  const heading = insight.reportsTitle;
+  const description = insight.reportsDescription;
   return (
     <div>
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-          Quarterly Reports & Forecasts
+          {heading}
         </h2>
         <p className="mt-4 text-lg leading-8 text-slate-600">
-          Deep-dive analysis curated for executives and trade operators.
+          {description}
         </p>
       </div>
       <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:max-w-none lg:grid-cols-3">

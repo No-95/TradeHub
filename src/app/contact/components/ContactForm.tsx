@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send, Globe, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, Globe, Clock, Send } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
 
 type ContactFormInput = {
   name: string;
@@ -11,50 +13,22 @@ type ContactFormInput = {
   message: string;
 };
 
-type ContactTranslations = {
-  contactUs: string;
-  heroTitle: string;
-  heroDescription: string;
-  email: string;
-  emailAddress: string;
-  emailNote: string;
-  phone: string;
-  phoneNumber: string;
-  phoneNote: string;
-  office: string;
-  officeLocation: string;
-  officeNote: string;
-  languages: string;
-  languagesSupported: string;
-  inquiryTitle: string;
-  inquiryDescription: string;
-  sendInquiry: string;
-  sending: string;
-  notReadyTitle: string;
-  notReadyDescription: string;
-  emailUsDirectly: string;
-  callSupport: string;
-};
-
-type ContactFormProps = {
-  contact?: ContactTranslations;
-};
-
-const FALLBACK_CONTACT: ContactTranslations = {
+const FALLBACK_CONTACT = {
   contactUs: "Contact Us",
   heroTitle: "Let's talk about your next move.",
-  heroDescription: "Whether you're exploring a new market, scaling exports, or looking for a trade partner with real execution capability—we're ready to help.",
+  heroDescription:
+    "Whether you're exploring a new market, scaling exports, or looking for a trade partner with real execution capability—we're ready to help.",
   email: "Email",
   emailAddress: "contact@hdp.vn",
   emailNote: "We reply within 2 business days.",
   phone: "Phone",
-  phoneNumber: "+84 900 000 000",
+  phoneNumber: "+84 869 010 169",
   phoneNote: "Mon–Fri, 09:00–18:00 ICT",
   office: "Office",
-  officeLocation: "Ho Chi Minh City, Vietnam",
+  officeLocation: "Hà Nội, Việt Nam",
   officeNote: "By appointment for client meetings.",
   languages: "Languages",
-  languagesSupported: "English / Vietnamese / Korean / Chinese",
+  languagesSupported: "Tiếng Việt / Tiếng Anh / Tiếng Hàn",
   inquiryTitle: "Send an inquiry",
   inquiryDescription: "Tell us about your market, timeline, and priorities.",
   sendInquiry: "Send inquiry",
@@ -63,9 +37,74 @@ const FALLBACK_CONTACT: ContactTranslations = {
   notReadyDescription: "Book a short intro call or request our capability brief.",
   emailUsDirectly: "Email us directly",
   callSupport: "Call support",
+  successMessage:
+    "Thank you. Our team will review your inquiry and reply within two business days.",
+  formDisclaimer:
+    "By submitting, you agree to our handling of your contact details for this inquiry.",
+  formErrors: {
+    nameRequired: "Name is required.",
+    invalidEmail: "Please enter a valid work email.",
+    selectInquiry: "Please select an inquiry type.",
+    messageRequired: "Message is required.",
+    submissionError: "Something went wrong. Please try again or contact us directly.",
+  },
 };
 
-export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormProps) {
+const uiByLang: Record<string, {
+  labelName: string;
+  labelEmail: string;
+  labelCompany: string;
+  labelInquiry: string;
+  labelMessage: string;
+  placeholderName: string;
+  placeholderEmail: string;
+  placeholderCompany: string;
+  placeholderMessage: string;
+  optionSelect: string;
+}> = {
+  VIE: {
+    labelName: "Họ và tên",
+    labelEmail: "Email công việc",
+    labelCompany: "Công ty",
+    labelInquiry: "Loại yêu cầu",
+    labelMessage: "Tin nhắn",
+    placeholderName: "Họ và tên",
+    placeholderEmail: "email@company.com",
+    placeholderCompany: "Tên công ty",
+    placeholderMessage: "Chia sẻ thị trường, thời gian và ưu tiên của bạn...",
+    optionSelect: "Chọn loại yêu cầu",
+  },
+  KR: {
+    labelName: "이름",
+    labelEmail: "업무 이메일",
+    labelCompany: "회사",
+    labelInquiry: "문의 유형",
+    labelMessage: "메시지",
+    placeholderName: "이름",
+    placeholderEmail: "email@company.com",
+    placeholderCompany: "회사 이름",
+    placeholderMessage: "시장, 일정 및 우선순위를 알려주세요...",
+    optionSelect: "문의 유형 선택",
+  },
+  ENG: {
+    labelName: "Full name",
+    labelEmail: "Work email",
+    labelCompany: "Company",
+    labelInquiry: "Inquiry type",
+    labelMessage: "Message",
+    placeholderName: "Your name",
+    placeholderEmail: "you@company.com",
+    placeholderCompany: "Company name",
+    placeholderMessage: "Share your priorities, markets, and timelines...",
+    optionSelect: "Select an inquiry type",
+  },
+};
+
+export default function ContactForm() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const contact = t.contact ?? translations.ENG.contact ?? FALLBACK_CONTACT;
+  const ui = uiByLang[lang] ?? uiByLang.ENG;
   const [form, setForm] = useState<ContactFormInput>({
     name: "",
     email: "",
@@ -77,11 +116,10 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
   const [error, setError] = useState<string | null>(null);
 
   const validate = (): string | null => {
-    if (!form.name.trim()) return "Name is required.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      return "Please enter a valid work email.";
-    if (!form.inquiry) return "Please select an inquiry type.";
-    if (!form.message.trim()) return "Message is required.";
+    if (!form.name.trim()) return FALLBACK_CONTACT.formErrors.nameRequired;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) return FALLBACK_CONTACT.formErrors.invalidEmail;
+    if (!form.inquiry) return FALLBACK_CONTACT.formErrors.selectInquiry;
+    if (!form.message.trim()) return FALLBACK_CONTACT.formErrors.messageRequired;
     return null;
   };
 
@@ -103,7 +141,7 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
       setStatus("success");
       setForm({ name: "", email: "", company: "", inquiry: "", message: "" });
     } catch {
-      setError("Something went wrong. Please try again or contact us directly.");
+      setError(FALLBACK_CONTACT.formErrors.submissionError);
       setStatus("error");
     }
   };
@@ -200,9 +238,7 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-neutral-900">{contact.inquiryTitle}</h2>
-                    <p className="text-sm text-neutral-500">
-                      {contact.inquiryDescription}
-                    </p>
+                    <p className="text-sm text-neutral-500">{contact.inquiryDescription}</p>
                   </div>
                 </div>
 
@@ -210,7 +246,7 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div>
                       <label htmlFor="name" className="block text-sm font-semibold text-neutral-900">
-                        Full name <span className="text-red-600">*</span>
+                        {ui.labelName} <span className="text-red-600">*</span>
                       </label>
                       <input
                         id="name"
@@ -220,12 +256,12 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
                         value={form.name}
                         onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                         className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
-                        placeholder="Your name"
+                        placeholder={ui.placeholderName}
                       />
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-sm font-semibold text-neutral-900">
-                        Work email <span className="text-red-600">*</span>
+                        {ui.labelEmail} <span className="text-red-600">*</span>
                       </label>
                       <input
                         id="email"
@@ -236,12 +272,12 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
                         value={form.email}
                         onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                         className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
-                        placeholder="you@company.com"
+                        placeholder={ui.placeholderEmail}
                       />
                     </div>
                     <div>
                       <label htmlFor="company" className="block text-sm font-semibold text-neutral-900">
-                        Company
+                        {ui.labelCompany}
                       </label>
                       <input
                         id="company"
@@ -250,12 +286,12 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
                         value={form.company}
                         onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))}
                         className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
-                        placeholder="Company name"
+                        placeholder={ui.placeholderCompany}
                       />
                     </div>
                     <div>
                       <label htmlFor="inquiry" className="block text-sm font-semibold text-neutral-900">
-                        Inquiry type <span className="text-red-600">*</span>
+                        {ui.labelInquiry} <span className="text-red-600">*</span>
                       </label>
                       <select
                         id="inquiry"
@@ -265,7 +301,7 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
                         onChange={(e) => setForm((f) => ({ ...f, inquiry: e.target.value }))}
                         className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
                       >
-                        <option value="">Select an inquiry type</option>
+                        <option value="">{ui.optionSelect}</option>
                         <option value="trade-inquiry">Trade Inquiry</option>
                         <option value="partnership">Partnership / JV</option>
                         <option value="investment">Investment & Funding</option>
@@ -275,7 +311,7 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
                     </div>
                     <div className="sm:col-span-2">
                       <label htmlFor="message" className="block text-sm font-semibold text-neutral-900">
-                        Message <span className="text-red-600">*</span>
+                        {ui.labelMessage} <span className="text-red-600">*</span>
                       </label>
                       <textarea
                         id="message"
@@ -285,22 +321,20 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
                         value={form.message}
                         onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                         className="mt-2 w-full rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
-                        placeholder="Share your priorities, markets, and timelines..."
+                        placeholder={ui.placeholderMessage}
                       />
                     </div>
                   </div>
 
                   {status === "success" && (
-                    <p className="text-sm text-emerald-700">
-                      Thank you. Our team will review your inquiry and reply within two business days.
-                    </p>
+                    <p className="text-sm text-emerald-700">{contact.successMessage}</p>
                   )}
                   {status === "error" && error && (
                     <p className="text-sm text-red-700">{error}</p>
                   )}
 
                   <div className="flex items-center justify-between">
-                    <p className="text-xs text-neutral-500">By submitting, you agree to our handling of your contact details for this inquiry.</p>
+                    <p className="text-xs text-neutral-500">{contact.formDisclaimer}</p>
                     <button
                       type="submit"
                       disabled={status === "loading"}
@@ -331,9 +365,7 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
               <h2 className="text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
                 {contact.notReadyTitle}
               </h2>
-              <p className="mt-3 max-w-xl text-base text-neutral-600">
-                {contact.notReadyDescription}
-              </p>
+              <p className="mt-3 max-w-xl text-base text-neutral-600">{contact.notReadyDescription}</p>
             </div>
             <div className="flex flex-wrap gap-4 md:justify-end">
               <a
@@ -344,7 +376,7 @@ export default function ContactForm({ contact = FALLBACK_CONTACT }: ContactFormP
                 {contact.emailUsDirectly}
               </a>
               <a
-                href="tel:+849****0000"
+                href="tel:+84869010169"
                 className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-white px-6 py-3 text-sm font-semibold text-brand transition hover:bg-brand-muted"
               >
                 <Phone className="h-4 w-4" strokeWidth={1.8} />

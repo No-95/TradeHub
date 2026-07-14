@@ -22,11 +22,11 @@ import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
 
 const noticeItems = [
-  { tagKey: "notice", titleKey: "notice1", title: "New market entry guide", date: "2025.07.10" },
-  { tagKey: "news", titleKey: "news1", title: "Vietnam-Korea trade update", date: "2025.07.09" },
-  { tagKey: "notice", titleKey: "notice2", title: "Overseas center opening", date: "2025.07.08" },
-  { tagKey: "news", titleKey: "news2", title: "Investment brief released", date: "2025.07.07" },
-  { tagKey: "notice", titleKey: "notice3", title: "Partner program launched", date: "2025.07.06" },
+  { tagKey: "notice", title: "New market entry guide", titleVie: "Hướng dẫn thâm nhập thị trường mới", titleKr: "신규 시장 진출 가이드", date: "2025.07.10" },
+  { tagKey: "news", title: "Vietnam-Korea trade update", titleVie: "Cập nhật thương mại Việt Nam-Hàn Quốc", titleKr: "베트남-한국 무역 업데이트", date: "2025.07.09" },
+  { tagKey: "notice", title: "Overseas center opening", titleVie: "Khánh thành trung tâm overseas", titleKr: "해외 센터 개소", date: "2025.07.08" },
+  { tagKey: "news", title: "Investment brief released", titleVie: "Phát hành bản tin đầu tư", titleKr: "투자 브리프 발행", date: "2025.07.07" },
+  { tagKey: "notice", title: "Partner program launched", titleVie: "Ra mắt chương trình đối tác", titleKr: "파트너 프로그램 출시", date: "2025.07.06" },
 ];
 
 export default function KotraHome() {
@@ -35,8 +35,31 @@ export default function KotraHome() {
   const { lang } = useLanguage();
   const t = translations[lang];
   const home = t.home;
+  const itemTitle = (item: (typeof noticeItems)[number]) =>
+    lang === "VIE" ? item.titleVie : lang === "KR" ? item.titleKr : item.title;
 
-  const tagLabel = (key: string) => (key === "notice" ? home.notice : home.news);
+  const tagLabel = (key: string): string => {
+    if (key === "notice") return home.notice;
+    if (key === "news") {
+      const rawNews = home.news as unknown;
+      if (typeof rawNews === 'string') return rawNews;
+      if (rawNews && typeof rawNews === 'object' && 'heading' in rawNews) {
+        return (rawNews as { heading?: string }).heading ?? 'News';
+      }
+      return 'News';
+    }
+    return key;
+  };
+
+  const infoServiceLabel = (key: string): string => {
+    if (key === "tradeInfo") return home.tradeInfo;
+    if (key === "investmentInfo") return home.investmentInfo;
+    if (key === "tradeProject") return home.tradeProject;
+    if (key === "globalWindow") return home.globalWindow;
+    if (key === "tradeLeads") return home.tradeLeads;
+    if (key === "newsroom") return home.newsroom;
+    return key;
+  };
 
   return (
     <main className="flex-1">
@@ -121,11 +144,11 @@ export default function KotraHome() {
               >
                 <ul className="divide-y divide-neutral-100">
                   {noticeItems.map((item) => (
-                    <li key={item.titleKey} className="px-6 py-3">
+                    <li key={item.title + item.date} className="px-6 py-3">
                       <a href="#" className="group flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center gap-3">
                           <span className="rounded-full bg-brand px-2 py-0.5 text-[11px] font-medium text-white">{tagLabel(item.tagKey)}</span>
-                          <span className="text-sm text-neutral-800 group-hover:text-brand transition-colors line-clamp-1">{item.title}</span>
+                          <span className="text-sm text-neutral-800 group-hover:text-brand transition-colors line-clamp-1">{itemTitle(item)}</span>
                         </div>
                         <span className="text-xs text-neutral-400 sm:text-right">{item.date}</span>
                       </a>
@@ -145,7 +168,7 @@ export default function KotraHome() {
                 onClick={() => setNewsOpen((v) => !v)}
                 className="flex w-full items-center justify-between rounded-t-2xl border border-neutral-100 bg-white px-6 py-4 text-left"
               >
-                <span className="text-base font-semibold text-neutral-900">{home.news}</span>
+                <span className="text-base font-semibold text-neutral-900">{tagLabel('news')}</span>
                 {newsOpen ? <ChevronDown className="h-4 w-4 text-neutral-500" /> : <ChevronRight className="h-4 w-4 text-neutral-500" />}
               </button>
 
@@ -154,11 +177,11 @@ export default function KotraHome() {
               >
                 <ul className="divide-y divide-neutral-100">
                   {noticeItems.map((item) => (
-                    <li key={item.titleKey} className="px-6 py-3">
+                    <li key={item.title + item.date} className="px-6 py-3">
                       <a href="#" className="group flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center gap-3">
                           <span className="rounded-full bg-brand-muted px-2 py-0.5 text-[11px] font-medium text-brand">{tagLabel(item.tagKey)}</span>
-                          <span className="text-sm text-neutral-800 group-hover:text-brand transition-colors line-clamp-1">{item.title}</span>
+                          <span className="text-sm text-neutral-800 group-hover:text-brand transition-colors line-clamp-1">{itemTitle(item)}</span>
                         </div>
                         <span className="text-xs text-neutral-400 sm:text-right">{item.date}</span>
                       </a>
@@ -198,7 +221,7 @@ export default function KotraHome() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand/5 text-brand">
                   <HelpCircle className="h-5 w-5" strokeWidth={1.5} />
                 </div>
-                <span className="text-xs font-medium text-neutral-800">{home[item.labelKey as keyof typeof home] ?? item.labelKey}</span>
+                <span className="text-xs font-medium text-neutral-800">{infoServiceLabel(item.labelKey)}</span>
               </Link>
             ))}
           </div>

@@ -6,14 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
 
 const navItems = [
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-  { label: "News", href: "/news" },
-  { label: "Market Insight", href: "/market-insight" },
-  { label: "Business Opportunity", href: "/business-opportunity" },
-];
+  { labelKey: "about", href: "/about" },
+  { labelKey: "contact", href: "/contact" },
+  { labelKey: "news", href: "/news" },
+  { labelKey: "marketInsight", href: "/market-insight" },
+  { labelKey: "businessOpportunity", href: "/business-opportunity" },
+] as const;
 
 const languageOptions = [
   { label: "VIE", value: "VIE" },
@@ -26,6 +27,8 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { lang, setLang } = useLanguage();
+  const t = translations[lang];
+  const navLabel = (key: keyof typeof t.nav) => t.nav[key];
 
   const isActive = (href: string) => pathname === href;
 
@@ -70,13 +73,13 @@ export default function Header() {
         }`}
       >
         <div className="mx-auto max-w-7xl px-4">
-          <div className="flex h-20 items-center justify-between">
+          <div className="flex h-[72px] items-center justify-between">
             <Link href="/" className="flex items-center gap-3">
-              <div className="relative h-12 w-12 overflow-hidden rounded">
+              <div className="relative h-11 w-11 overflow-hidden rounded">
                 <Image src="/hdp-logo.png" alt="HDP HOLDINGS" fill className="object-contain" />
               </div>
               <div className="leading-tight">
-                <div className="text-lg font-semibold tracking-tight text-neutral-900">HDP HOLDINGS</div>
+                <div className="text-base font-semibold tracking-tight text-neutral-900">HDP HOLDINGS</div>
                 <div className="text-[10px] uppercase tracking-widest text-brand">Global Trade & Investment</div>
               </div>
             </Link>
@@ -88,7 +91,7 @@ export default function Header() {
                   href={item.href}
                   className={`relative py-6 transition-colors hover:text-brand ${isActive(item.href) ? "text-brand" : ""}`}
                 >
-                  {item.label}
+                  {navLabel(item.labelKey)}
                 </Link>
               ))}
             </nav>
@@ -105,7 +108,7 @@ export default function Header() {
             <div className="lg:hidden border-t border-brand/10 bg-white py-4 text-sm font-medium text-neutral-700 space-y-1">
               {navItems.map((item) => (
                 <Link key={item.href} href={item.href} className="block rounded px-3 py-3 hover:bg-brand/5 hover:text-brand">
-                  {item.label}
+                  {navLabel(item.labelKey)}
                 </Link>
               ))}
             </div>

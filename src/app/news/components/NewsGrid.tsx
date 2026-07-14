@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
 
 type Post = {
   slug: string;
@@ -12,6 +14,11 @@ type Post = {
   category: string;
   image: string;
   alt: string;
+};
+
+type NewsGridProps = {
+  fallbackHeading?: string;
+  fallbackDescription?: string;
 };
 
 const posts: Post[] = [
@@ -59,15 +66,35 @@ const posts: Post[] = [
   },
 ];
 
-export default function NewsGrid() {
+export default function NewsGrid({ fallbackHeading, fallbackDescription }: NewsGridProps) {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const home = t.home;
+  const newsBlock = (home.news as { heading?: string; description?: string; readMore?: string } | string) ?? {};
+  const heading =
+    fallbackHeading ??
+    (typeof newsBlock === 'object' && newsBlock.heading ? newsBlock.heading : 'Latest updates');
+  const description =
+    fallbackDescription ??
+    (typeof newsBlock === 'object' && newsBlock.description
+      ? newsBlock.description
+      : 'News from HDP Holdings covering diplomacy, policy, aerospace trade, and technology cooperation.');
+  const readMore =
+    typeof newsBlock === 'object' && newsBlock.readMore
+      ? newsBlock.readMore
+      : lang === 'VIE'
+        ? 'Đọc thêm'
+        : lang === 'KR'
+          ? '자세히 보기'
+          : 'Read more';
   return (
     <div>
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl">
-          Latest updates
+          {heading}
         </h2>
         <p className="mt-4 text-lg leading-8 text-neutral-600">
-          News from HDP Holdings covering diplomacy, policy, aerospace trade, and technology cooperation.
+          {description}
         </p>
       </div>
       <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:max-w-none lg:grid-cols-3">
@@ -99,7 +126,7 @@ export default function NewsGrid() {
               </h3>
               <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-600">{post.excerpt}</p>
               <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-neutral-900 transition-colors duration-300 group-hover:text-brand">
-                Read more
+                {readMore}
               </span>
             </Link>
           </motion.article>

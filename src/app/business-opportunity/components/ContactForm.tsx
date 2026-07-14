@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import { useLanguage } from '@/lib/language-context';
+import { translations } from '@/lib/translations';
 
 type PartnershipFormInput = {
   companyName: string;
@@ -10,6 +12,9 @@ type PartnershipFormInput = {
 };
 
 export default function ContactForm() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const business = t.businessOpportunity as any;
   const [form, setForm] = useState<PartnershipFormInput>({
     companyName: '',
     corporateEmail: '',
@@ -20,11 +25,10 @@ export default function ContactForm() {
   const [error, setError] = useState<string | null>(null);
 
   const validate = (): string | null => {
-    if (!form.companyName.trim()) return 'Company name is required.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.corporateEmail))
-      return 'Please enter a valid corporate email.';
-    if (!form.opportunityType) return 'Please select an opportunity type.';
-    if (!form.message.trim()) return 'Message is required.';
+    if (!form.companyName.trim()) return business.formErrors.nameRequired;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.corporateEmail)) return business.formErrors.invalidEmail;
+    if (!form.opportunityType) return business.formErrors.selectInquiry;
+    if (!form.message.trim()) return business.formErrors.messageRequired;
     return null;
   };
 
@@ -42,7 +46,7 @@ export default function ContactForm() {
     setStatus('loading');
     try {
       // Replace with your API route or third-party endpoint
-      const response = await fetch('/api/partnership-inquiry', {
+      const response = await fetch('/api/business-opportunity-partnership-inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -60,7 +64,7 @@ export default function ContactForm() {
       //   opportunityType: form.opportunityType,
       // });
     } catch {
-      setError('Something went wrong. Please contact us directly.');
+      setError(business.formErrors.submissionError);
       setStatus('error');
     }
   };
@@ -70,11 +74,10 @@ export default function ContactForm() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Start the Conversation
+            {business.contactTitle}
           </h2>
           <p className="mt-4 text-lg leading-8 text-slate-600">
-            Tell us about your organization and interests. Our partnership team
-            will respond within two business days.
+            {business.contactDescription}
           </p>
         </div>
         <form
@@ -88,7 +91,7 @@ export default function ContactForm() {
                 htmlFor="companyName"
                 className="block text-sm font-semibold leading-6 text-slate-900"
               >
-                Company Name <span className="text-red-600">*</span>
+                {business.companyLabel} <span className="text-red-600">*</span>
               </label>
               <div className="mt-2.5">
                 <input
@@ -101,7 +104,7 @@ export default function ContactForm() {
                     setForm((f) => ({ ...f, companyName: e.target.value }))
                   }
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                  placeholder="Acme Corporation"
+                  placeholder={business.placeholderCompany}
                 />
               </div>
             </div>
@@ -110,7 +113,7 @@ export default function ContactForm() {
                 htmlFor="corporateEmail"
                 className="block text-sm font-semibold leading-6 text-slate-900"
               >
-                Corporate Email <span className="text-red-600">*</span>
+                {business.corporateEmailLabel} <span className="text-red-600">*</span>
               </label>
               <div className="mt-2.5">
                 <input
@@ -124,7 +127,7 @@ export default function ContactForm() {
                     setForm((f) => ({ ...f, corporateEmail: e.target.value }))
                   }
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                  placeholder="contact@company.com"
+                  placeholder={business.placeholderEmail}
                 />
               </div>
             </div>
@@ -133,7 +136,7 @@ export default function ContactForm() {
                 htmlFor="opportunityType"
                 className="block text-sm font-semibold leading-6 text-slate-900"
               >
-                Opportunity Type <span className="text-red-600">*</span>
+                {business.opportunityLabel} <span className="text-red-600">*</span>
               </label>
               <div className="mt-2.5">
                 <select
@@ -146,11 +149,11 @@ export default function ContactForm() {
                   }
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                 >
-                  <option value="">Select an opportunity</option>
-                  <option value="strategic-partnership">Strategic Partnership & Joint Ventures</option>
-                  <option value="distribution">Distribution & Supply Chain Alliances</option>
-                  <option value="investment">Investment & Venturing</option>
-                  <option value="other">Other</option>
+                  <option value="">{business.optionSelect}</option>
+                  <option value="strategic-partnership">{business.optionStrategic}</option>
+                  <option value="distribution">{business.optionDistribution}</option>
+                  <option value="investment">{business.optionInvestment}</option>
+                  <option value="other">{business.optionOther}</option>
                 </select>
               </div>
             </div>
@@ -159,7 +162,7 @@ export default function ContactForm() {
                 htmlFor="message"
                 className="block text-sm font-semibold leading-6 text-slate-900"
               >
-                Message <span className="text-red-600">*</span>
+                {business.messageLabel} <span className="text-red-600">*</span>
               </label>
               <div className="mt-2.5">
                 <textarea
@@ -172,14 +175,14 @@ export default function ContactForm() {
                     setForm((f) => ({ ...f, message: e.target.value }))
                   }
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                  placeholder="Share your goals, markets, and timeline..."
+                  placeholder={business.placeholderMessage}
                 />
               </div>
             </div>
           </div>
           {status === 'success' && (
-            <p className="mt-4 text-sm text-green-700">
-              Thank you. Our partnership team will reach out shortly.
+            <p className="mt-4 text-sm text-emerald-700">
+              {business.successMessage}
             </p>
           )}
           {status === 'error' && error && (
@@ -191,7 +194,7 @@ export default function ContactForm() {
               disabled={status === 'loading'}
               className="block w-full rounded-md bg-blue-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors"
             >
-              {status === 'loading' ? 'Submitting...' : 'Submit Partnership Inquiry'}
+              {status === 'loading' ? business.submittingButton : business.submitButton}
             </button>
           </div>
         </form>
